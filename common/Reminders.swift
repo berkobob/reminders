@@ -38,16 +38,22 @@ class Reminders {
 }
 
 struct Reminder : Codable {
+    let id: String
     let title: String
     let dueDate: DateComponents?
     let priority: Int 
     let isCompleted: Bool
+    let url: String?
+    let notes: String?
 
     init(reminder : EKReminder) {
+        self.id = reminder.calendarItemIdentifier
         self.title = reminder.title
         self.dueDate = reminder.dueDateComponents
         self.priority = reminder.priority
         self.isCompleted = reminder.isCompleted
+        self.url = reminder.url?.description
+        self.notes = reminder.notes
     }
 
     func toJson() -> String? {

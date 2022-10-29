@@ -45,7 +45,7 @@ class MethodChannelReminders extends RemindersPlatform {
     final reminders =
         await methodChannel.invokeMethod('getRemindersInList', {'id': id});
     final result = jsonDecode(reminders);
-    print("From getRemindersInList $result");
+    result.forEach((r) => print(r));
     return (result);
   }
 }
