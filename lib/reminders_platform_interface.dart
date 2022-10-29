@@ -44,4 +44,9 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError(
         'getRemindersInList(String) has not been implemented');
   }
+
+  Future<String?> createReminder(Map<String, dynamic> reminder) {
+    throw UnimplementedError(
+        'createReminder(Reminder) has not been implemented');
+  }
 }

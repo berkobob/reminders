@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:reminders/reminders.dart';
-import 'package:reminders/reminders_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -95,6 +94,12 @@ class _MyAppState extends State<MyApp> {
                         _rems = x.toString();
                       });
                     }),
+                OutlinedButton(
+                  onPressed: () {
+                    Reminders().createReminder({"title": "hi there"});
+                  },
+                  child: const Text("Create Reminder"),
+                )
               ],
             ),
           ),

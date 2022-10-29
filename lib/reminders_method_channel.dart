@@ -48,4 +48,13 @@ class MethodChannelReminders extends RemindersPlatform {
     result.forEach((r) => print(r));
     return (result);
   }
+
+  @override
+  Future<String?> createReminder(Map<String, dynamic> reminder) async {
+    print('Creating $reminder');
+    final result = await methodChannel
+        .invokeMethod('createReminder', {'reminder': reminder});
+    print(result);
+    return result;
+  }
 }

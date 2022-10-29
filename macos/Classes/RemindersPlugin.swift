@@ -34,6 +34,15 @@ public class RemindersPlugin: NSObject, FlutterPlugin {
           }
         }
       }
+
+    case "createReminder":
+      if let args = call.arguments as? [String: Any] {
+        if let reminder = args["reminder"] as? [String: Any] {
+          self.reminders.createReminder(reminder) { (error) in 
+            result(error)
+          }
+        }
+      }
       
     default:
       result(FlutterMethodNotImplemented)

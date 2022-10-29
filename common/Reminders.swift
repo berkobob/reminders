@@ -35,6 +35,23 @@ class Reminders {
             }
         }
     }
+
+    func createReminder(_ json: [String: Any], _ completion: @escaping(String?) -> ()) {
+        print("The reminder to create: \(json)")
+        let reminder = EKReminder(eventStore: eventStore)
+        reminder.calendar = defaultList
+        reminder.title = json["title"] as? String
+        reminder.priority = json["priority"] as? Int ?? 0
+        reminder.isCompleted = json["isCompleted"] as? Bool ?? false
+        reminder.notes = json["notes"] as? String
+        print(reminder)
+        do {
+            try? eventStore.save(reminder, commit: true)
+        } catch {
+            completion(error.localizedDescription)
+        }
+        completion(reminder.calendarItemIdentifier)
+    }
 }
 
 struct Reminder : Codable {
@@ -43,7 +60,7 @@ struct Reminder : Codable {
     let dueDate: DateComponents?
     let priority: Int 
     let isCompleted: Bool
-    let url: String?
+    // let url: String?
     let notes: String?
 
     init(reminder : EKReminder) {
@@ -52,7 +69,7 @@ struct Reminder : Codable {
         self.dueDate = reminder.dueDateComponents
         self.priority = reminder.priority
         self.isCompleted = reminder.isCompleted
-        self.url = reminder.url?.description
+        // self.url = reminder.url?.description
         self.notes = reminder.notes
     }
 
