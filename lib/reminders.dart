@@ -1,5 +1,7 @@
-import 'package:reminders/reminders_list.dart';
-export 'package:reminders/reminders_list.dart';
+import 'reminder.dart';
+export 'reminder.dart';
+import 'reminders_list.dart';
+export 'reminders_list.dart';
 
 import 'reminders_platform_interface.dart';
 
@@ -24,7 +26,7 @@ class Reminders {
     return RemindersPlatform.instance.getRemindersInList(id);
   }
 
-  Future<String?> createReminder(Map<String, dynamic> reminder) async {
+  Future<Reminder> createReminder(Reminder reminder) async {
     return RemindersPlatform.instance.createReminder(reminder);
   }
 }

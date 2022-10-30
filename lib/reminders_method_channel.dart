@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:reminders/reminders_list.dart';
 
 import 'reminders_platform_interface.dart';
+import 'reminders_list.dart';
+import 'reminder.dart';
 
 /// An implementation of [RemindersPlatform] that uses method channels.
 class MethodChannelReminders extends RemindersPlatform {
@@ -45,16 +46,13 @@ class MethodChannelReminders extends RemindersPlatform {
     final reminders =
         await methodChannel.invokeMethod('getRemindersInList', {'id': id});
     final result = jsonDecode(reminders);
-    result.forEach((r) => print(r));
     return (result);
   }
 
   @override
-  Future<String?> createReminder(Map<String, dynamic> reminder) async {
-    print('Creating $reminder');
-    final result = await methodChannel
-        .invokeMethod('createReminder', {'reminder': reminder});
-    print(result);
-    return result;
+  Future<Reminder> createReminder(Reminder reminder) async {
+    reminder.id = await methodChannel
+        .invokeMethod('createReminder', {'reminder': reminder.toJson()});
+    return reminder;
   }
 }

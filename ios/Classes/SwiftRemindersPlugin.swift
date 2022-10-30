@@ -25,6 +25,24 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
       case "getAllLists":
         result(self.reminders.getAllLists())
 
+      case "getRemindersInList":
+        if let args = call.arguments as? [String: String] {
+          if let id = args["id"] {
+            self.reminders.getRemindersInList(id) { (reminders) in 
+              result(reminders)
+            }
+          }
+        }
+
+      case "createReminder":
+        if let args = call.arguments as? [String: Any] {
+          if let reminder = args["reminder"] as? [String: Any] {
+            self.reminders.createReminder(reminder) { (error) in 
+              result(error)
+            }
+          }
+        }
+
       default:
         result(FlutterMethodNotImplemented)
     }

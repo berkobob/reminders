@@ -82,30 +82,32 @@ class _MyAppState extends State<MyApp> {
             child: Text('Default List: ${_defaultList?.title ?? "Failed"}'),
           ),
           Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Pick a list: "),
-                ListofLists(
-                    lists: _lists,
-                    cb: (String id) async {
-                      final x = await Reminders().getRemindersInList(id);
-                      setState(() {
-                        _rems = x.toString();
-                      });
-                    }),
-                OutlinedButton(
-                  onPressed: () {
-                    Reminders().createReminder({"title": "hi there"});
-                  },
-                  child: const Text("Create Reminder"),
-                )
-              ],
-            ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              const Text("Pick a list: "),
+              ListofLists(
+                  lists: _lists,
+                  cb: (String id) async {
+                    final x = await Reminders().getRemindersInList(id);
+                    setState(() {
+                      _rems = x.toString();
+                    });
+                  }),
+              OutlinedButton(
+                onPressed: () async {
+                  final reminder = await Reminders().createReminder(Reminder(
+                      title: "test reminder 3",
+                      priority: 4,
+                      isCompleted: true,
+                      notes: "Here is another note!"));
+                  setState(() {
+                    _rems = reminder.toString();
+                  });
+                },
+                child: const Text("Create Reminder"),
+              )
+            ]),
           ),
-          Center(
-            child: Text(_rems),
-          )
+          Center(child: Text(_rems))
         ]),
       ),
     );

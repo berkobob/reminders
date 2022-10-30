@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:reminders/reminders_list.dart';
 
+import 'reminder.dart';
+import 'reminders_list.dart';
 import 'reminders_method_channel.dart';
 
 abstract class RemindersPlatform extends PlatformInterface {
@@ -45,7 +46,7 @@ abstract class RemindersPlatform extends PlatformInterface {
         'getRemindersInList(String) has not been implemented');
   }
 
-  Future<String?> createReminder(Map<String, dynamic> reminder) {
+  Future<Reminder> createReminder(Reminder reminder) {
     throw UnimplementedError(
         'createReminder(Reminder) has not been implemented');
   }
