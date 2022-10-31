@@ -25,29 +25,33 @@ abstract class RemindersPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
+  Future<String?> getPlatformVersion() async {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<bool> hasAccess() {
+  Future<bool> hasAccess() async {
     throw UnimplementedError('hasAccess() has not been implemented.');
   }
 
-  Future<RemList?> getDefaultList() {
+  Future<RemList?> getDefaultList() async {
     throw UnimplementedError('getDefaultList() has not been implemented.');
   }
 
-  Future<List<RemList>?> getAllLists() {
+  Future<List<RemList>?> getAllLists() async {
     throw UnimplementedError('getAllLists() has not been implemented.');
   }
 
-  Future<List<Reminder>?> getRemindersInList(String id) {
+  Future<List<Reminder>?> getRemindersInList(String id) async {
     throw UnimplementedError(
         'getRemindersInList(String) has not been implemented');
   }
 
-  Future<Reminder> createReminder(Reminder reminder) {
+  Future<Reminder> createReminder(Reminder reminder) async {
     throw UnimplementedError(
         'createReminder(Reminder) has not been implemented');
+  }
+
+  Future<List<Reminder>?> getAllReminders() async {
+    throw UnimplementedError('getAllReminders() has not been implemented');
   }
 }

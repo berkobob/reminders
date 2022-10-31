@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'reminders_list.dart';
 
 class Reminder {
@@ -54,5 +52,6 @@ class Reminder {
 
   @override
   String toString() =>
-      'List: ${list.title}\tTitle: $title\tdueDate: $dueDate\tPriority: $priority\tisComplete: $isCompleted\tNotes: $notes';
+      '''List: ${list.title}\tTitle: $title\tdueDate: $dueDate\tPriority: 
+      $priority\tisComplete: $isCompleted\tNotes: $notes''';
 }

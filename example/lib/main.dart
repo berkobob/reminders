@@ -83,6 +83,14 @@ class _MyAppState extends State<MyApp> {
           ),
           Center(
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ElevatedButton(
+                  onPressed: () async {
+                    final reminders = await Reminders().getAllReminders();
+                    setState(() {
+                      _rems = reminders ?? [];
+                    });
+                  },
+                  child: const Text('Get All')),
               const Text("Pick a list: "),
               ListofLists(
                   lists: _lists,

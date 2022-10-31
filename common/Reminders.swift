@@ -24,6 +24,22 @@ class Reminders {
         return String(data: jsonData ?? Data(), encoding: .utf8)
     }
 
+    func getAllReminders(_ completion: @escaping(String?) -> ()) {
+        let predicate: NSPredicate? = eventStore.predicateForReminders(in: nil)
+        if let predicate = predicate {
+            getReminders(predicate, completion)
+        }
+    }
+
+    func getReminders(_ predicate: NSPredicate, _ completion: @escaping(String?) -> ()) {
+        eventStore.fetchReminders(matching: predicate) { (_ reminders: [Any]?) -> Void in 
+        let rems = reminders as? [EKReminder] ?? [EKReminder]()
+        let result = rems.map { Reminder(reminder: $0) }
+        let json = try? JSONEncoder().encode(result)
+        completion(String(data: json ?? Data(), encoding: .utf8))
+        }
+    } 
+
     func getRemindersInList(_ id: String, _ completion: @escaping(String?) -> ()) {
         let calendar : [EKCalendar] = [eventStore.calendar(withIdentifier: id) ?? EKCalendar()]
         let predicate: NSPredicate? = eventStore.predicateForReminders(in: calendar)
@@ -38,7 +54,6 @@ class Reminders {
     }
 
     func createReminder(_ json: [String: Any], _ completion: @escaping(String?) -> ()) {
-        print("The reminder to create: \(json)")
         let reminder = EKReminder(eventStore: eventStore)
         reminder.calendar = defaultList
         reminder.title = json["title"] as? String
@@ -48,7 +63,6 @@ class Reminders {
         if let date = json["dueDate"] as? [String: Int] {
         reminder.dueDateComponents = DateComponents(year: date["year"], month: date["month"], day: date["day"], hour: date["hour"], minute: date["minute"] )
         }
-        print(reminder)
         do {
             try eventStore.save(reminder, commit: true)
         } catch {

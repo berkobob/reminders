@@ -25,6 +25,9 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
       case "getAllLists":
         result(self.reminders.getAllLists())
 
+      case "getAllReminders":
+        result(self.reminders.getAllReminders())
+
       case "getRemindersInList":
         if let args = call.arguments as? [String: String] {
           if let id = args["id"] {

@@ -29,4 +29,8 @@ class Reminders {
   Future<Reminder> createReminder(Reminder reminder) async {
     return RemindersPlatform.instance.createReminder(reminder);
   }
+
+  Future<List<Reminder>?> getAllReminders() async {
+    return RemindersPlatform.instance.getAllReminders();
+  }
 }
