@@ -8,6 +8,7 @@ class Reminders {
     init() {
         defaultList = eventStore.defaultCalendarForNewReminders()
         eventStore.requestAccess(to: EKEntityType.reminder, completion: {(granted, error) in 
+            if let error = error { print(error) }
             self.hasAccess = granted ? true : false
             })
     }
@@ -44,9 +45,12 @@ class Reminders {
         reminder.priority = json["priority"] as? Int ?? 0
         reminder.isCompleted = json["isCompleted"] as? Bool ?? false
         reminder.notes = json["notes"] as? String
+        if let date = json["dueDate"] as? [String: Int] {
+        reminder.dueDateComponents = DateComponents(year: date["year"], month: date["month"], day: date["day"], hour: date["hour"], minute: date["minute"] )
+        }
         print(reminder)
         do {
-            try? eventStore.save(reminder, commit: true)
+            try eventStore.save(reminder, commit: true)
         } catch {
             completion(error.localizedDescription)
         }
@@ -55,21 +59,21 @@ class Reminders {
 }
 
 struct Reminder : Codable {
+    let list: List
     let id: String
     let title: String
     let dueDate: DateComponents?
     let priority: Int 
     let isCompleted: Bool
-    // let url: String?
     let notes: String?
 
     init(reminder : EKReminder) {
+        self.list = List(list: reminder.calendar)
         self.id = reminder.calendarItemIdentifier
         self.title = reminder.title
         self.dueDate = reminder.dueDateComponents
         self.priority = reminder.priority
         self.isCompleted = reminder.isCompleted
-        // self.url = reminder.url?.description
         self.notes = reminder.notes
     }
 

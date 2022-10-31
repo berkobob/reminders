@@ -41,7 +41,7 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError('getAllLists() has not been implemented.');
   }
 
-  Future<List?> getRemindersInList(String id) {
+  Future<List<Reminder>?> getRemindersInList(String id) {
     throw UnimplementedError(
         'getRemindersInList(String) has not been implemented');
   }

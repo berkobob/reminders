@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   final _remindersPlugin = Reminders();
   List<RemList> _lists = [];
-  String _rems = "Nothing yet";
+  List<Reminder> _rems = [];
 
   @override
   void initState() {
@@ -87,27 +87,48 @@ class _MyAppState extends State<MyApp> {
               ListofLists(
                   lists: _lists,
                   cb: (String id) async {
-                    final x = await Reminders().getRemindersInList(id);
+                    final rems = await Reminders().getRemindersInList(id);
                     setState(() {
-                      _rems = x.toString();
+                      _rems = rems ?? [];
                     });
                   }),
               OutlinedButton(
                 onPressed: () async {
                   final reminder = await Reminders().createReminder(Reminder(
+                      list: _defaultList!,
                       title: "test reminder 3",
                       priority: 4,
                       isCompleted: true,
+                      dueDate: DateTime(2023),
                       notes: "Here is another note!"));
                   setState(() {
-                    _rems = reminder.toString();
+                    _rems.add(reminder);
                   });
                 },
                 child: const Text("Create Reminder"),
               )
             ]),
           ),
-          Center(child: Text(_rems))
+          Expanded(
+            child: ListView(
+                shrinkWrap: true,
+                children: _rems
+                    .map((rem) => ListTile(
+                          leading: Text(rem.priority.toString()),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(rem.title),
+                              Text(rem.dueDate?.toString() ?? "No due date")
+                            ],
+                          ),
+                          subtitle: rem.notes != null ? Text(rem.notes!) : null,
+                          trailing: rem.isCompleted
+                              ? const Icon(Icons.check_box)
+                              : const Icon(Icons.check_box_outline_blank),
+                        ))
+                    .toList()),
+          )
         ]),
       ),
     );

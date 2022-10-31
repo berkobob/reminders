@@ -42,10 +42,14 @@ class MethodChannelReminders extends RemindersPlatform {
   }
 
   @override
-  Future<List?> getRemindersInList(String id) async {
+  Future<List<Reminder>?> getRemindersInList(String id) async {
     final reminders =
         await methodChannel.invokeMethod('getRemindersInList', {'id': id});
-    final result = jsonDecode(reminders);
+    print(reminders);
+    final result = jsonDecode(reminders)
+        .map<Reminder>((reminder) => Reminder.fromJson(reminder))
+        .toList();
+    // result.forEach(print);
     return (result);
   }
 

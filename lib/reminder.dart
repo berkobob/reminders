@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'reminders_list.dart';
+
 class Reminder {
+  RemList list;
   String? id;
   String title;
   DateTime? dueDate;
@@ -7,7 +12,8 @@ class Reminder {
   String? notes;
 
   Reminder(
-      {this.id,
+      {required this.list,
+      this.id,
       required this.title,
       this.dueDate,
       this.priority = 0,
@@ -15,17 +21,32 @@ class Reminder {
       this.notes});
 
   Reminder.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+      : list = RemList.fromJson(json['list']),
+        id = json['id'],
         title = json['title'],
-        dueDate = json['dueDate'],
         priority = json['priority'],
         isCompleted = json['isCompleted'],
-        notes = json['notes'];
+        notes = json['notes'] {
+    if (json['dueDate'] != null) {
+      final date = json['dueDate'];
+      dueDate = DateTime(date['year']!, date['month']!, date['day']!,
+          date['hour'] ?? 00, date['minute'] ?? 00);
+    }
+  }
 
   Map<String, dynamic> toJson() => {
+        'list': list.id,
         'id': id,
         'title': title,
-        'dueDate': dueDate,
+        'dueDate': dueDate == null
+            ? null
+            : {
+                'year': dueDate?.year,
+                'month': dueDate?.month,
+                'day': dueDate?.day,
+                'hour': dueDate?.hour,
+                'minute': dueDate?.minute
+              },
         'priority': priority,
         'isCompleted': isCompleted,
         'notes': notes
@@ -33,5 +54,5 @@ class Reminder {
 
   @override
   String toString() =>
-      'Title: $title\tdueDate: $dueDate\tPriority: $priority\tisComplete: $isCompleted\tNotes: $notes';
+      'List: ${list.title}\tTitle: $title\tdueDate: $dueDate\tPriority: $priority\tisComplete: $isCompleted\tNotes: $notes';
 }
