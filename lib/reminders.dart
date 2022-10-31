@@ -33,4 +33,8 @@ class Reminders {
   Future<List<Reminder>?> getAllReminders() async {
     return RemindersPlatform.instance.getAllReminders();
   }
+
+  Future<bool> deleteReminder(String id) async {
+    return RemindersPlatform.instance.deleteReminder(id);
+  }
 }

@@ -48,6 +48,15 @@ public class RemindersPlugin: NSObject, FlutterPlugin {
           }
         }
       }
+
+    case "deleteReminder":
+      if let args = call.arguments as? [String: String] {
+        if let id = args["id"] {
+          self.reminders.deleteReminder(id) { (error) in 
+            result(error)
+          }
+        }
+      }
       
     default:
       result(FlutterMethodNotImplemented)

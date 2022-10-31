@@ -134,6 +134,15 @@ class _MyAppState extends State<MyApp> {
                           trailing: rem.isCompleted
                               ? const Icon(Icons.check_box)
                               : const Icon(Icons.check_box_outline_blank),
+                          onLongPress: () async {
+                            final success =
+                                await Reminders().deleteReminder(rem.id!);
+                            if (success) {
+                              setState(() {
+                                _rems.removeWhere((r) => r.id == rem.id);
+                              });
+                            }
+                          },
                         ))
                     .toList()),
           )

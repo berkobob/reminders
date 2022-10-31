@@ -70,6 +70,14 @@ class Reminders {
         }
         completion(reminder.calendarItemIdentifier)
     }
+
+    func deleteReminder(_ id: String, _ completion: @escaping(Bool) -> ()) {
+        var success: Bool = false
+        if let reminder = eventStore.calendarItem(withIdentifier: id) as? EKReminder {
+        success = try! eventStore.remove(reminder, commit: true)
+        }
+        completion(success)
+    }
 }
 
 struct Reminder : Codable {
