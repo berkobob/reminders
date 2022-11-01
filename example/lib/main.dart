@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
   final _remindersPlugin = Reminders();
   List<RemList> _lists = [];
   List<Reminder> _rems = [];
+  String? _currentList;
 
   @override
   void initState() {
@@ -82,40 +83,49 @@ class _MyAppState extends State<MyApp> {
             child: Text('Default List: ${_defaultList?.title ?? "Failed"}'),
           ),
           Center(
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
-                  onPressed: () async {
-                    final reminders = await Reminders().getAllReminders();
-                    setState(() {
-                      _rems = reminders ?? [];
-                    });
-                  },
-                  child: const Text('Get All')),
-              const Text("Pick a list: "),
-              ListofLists(
-                  lists: _lists,
-                  cb: (String id) async {
-                    final rems = await Reminders().getRemindersInList(id);
-                    setState(() {
-                      _rems = rems ?? [];
-                    });
-                  }),
-              OutlinedButton(
-                onPressed: () async {
-                  final reminder = await Reminders().createReminder(Reminder(
-                      list: _defaultList!,
-                      title: "test reminder 3",
-                      priority: 4,
-                      isCompleted: true,
-                      dueDate: DateTime(2023),
-                      notes: "Here is another note!"));
-                  setState(() {
-                    _rems.add(reminder);
-                  });
-                },
-                child: const Text("Create Reminder"),
-              )
-            ]),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        final reminders = await Reminders().getAllReminders();
+                        setState(() {
+                          _rems = reminders ?? [];
+                        });
+                      },
+                      child: const Text('Get All')),
+                  const Text("Pick a list: "),
+                  ListofLists(
+                      lists: _lists,
+                      cb: (String id) async {
+                        final rems = await Reminders().getRemindersInList(id);
+                        setState(() {
+                          _currentList = id;
+                          _rems = rems ?? [];
+                        });
+                      }),
+                  OutlinedButton(
+                    onPressed: () async {
+                      final reminder = await Reminders().createReminder(
+                          Reminder(
+                              list: _lists.firstWhere(
+                                  (element) => element.id == _currentList),
+                              title: "test reminder 4",
+                              priority: 4,
+                              isCompleted: false,
+                              dueDate: DateTime(2023),
+                              notes: "Here is another note!"));
+                      setState(() {
+                        if (_currentList != null) {
+                          _rems.add(reminder);
+                        } else {
+                          print('you need to choose a list first');
+                        }
+                      });
+                    },
+                    child: const Text("Create Reminder"),
+                  )
+                ]),
           ),
           Expanded(
             child: ListView(
@@ -126,7 +136,11 @@ class _MyAppState extends State<MyApp> {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(rem.title),
+                              Expanded(
+                                  child: Text(
+                                rem.title,
+                                overflow: TextOverflow.clip,
+                              )),
                               Text(rem.dueDate?.toString() ?? "No due date")
                             ],
                           ),
@@ -137,10 +151,13 @@ class _MyAppState extends State<MyApp> {
                           onLongPress: () async {
                             final success =
                                 await Reminders().deleteReminder(rem.id!);
-                            if (success) {
+                            if (success == null) {
                               setState(() {
                                 _rems.removeWhere((r) => r.id == rem.id);
                               });
+                            } else {
+                              print('Error deleting: $rem');
+                              print('Error message: $success');
                             }
                           },
                         ))

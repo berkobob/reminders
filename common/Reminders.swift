@@ -55,14 +55,25 @@ class Reminders {
 
     func createReminder(_ json: [String: Any], _ completion: @escaping(String?) -> ()) {
         let reminder = EKReminder(eventStore: eventStore)
-        reminder.calendar = defaultList
+        guard let id: String = json["list"] as? String else {
+            completion("Calendar list ID missing or not a string: \(json["list"])")
+            return
+        }
+
+        guard let calendar = eventStore.calendar(withIdentifier: id) else {
+            completion("Cannot find a calendar list with ID: \(id)")
+            return
+        }
+
+        reminder.calendar = calendar
         reminder.title = json["title"] as? String
         reminder.priority = json["priority"] as? Int ?? 0
         reminder.isCompleted = json["isCompleted"] as? Bool ?? false
         reminder.notes = json["notes"] as? String
         if let date = json["dueDate"] as? [String: Int] {
-        reminder.dueDateComponents = DateComponents(year: date["year"], month: date["month"], day: date["day"], hour: date["hour"], minute: date["minute"] )
+            reminder.dueDateComponents = DateComponents(year: date["year"], month: date["month"], day: date["day"], hour: date["hour"], minute: date["minute"] )
         }
+
         do {
             try eventStore.save(reminder, commit: true)
         } catch {
@@ -71,12 +82,18 @@ class Reminders {
         completion(reminder.calendarItemIdentifier)
     }
 
-    func deleteReminder(_ id: String, _ completion: @escaping(Bool) -> ()) {
-        var success: Bool = false
-        if let reminder = eventStore.calendarItem(withIdentifier: id) as? EKReminder {
-        success = try! eventStore.remove(reminder, commit: true)
+    func deleteReminder(_ id: String, _ completion: @escaping(String?) -> ()) {
+        guard let reminder = eventStore.calendarItem(withIdentifier: id) as? EKReminder else {
+            completion("Cannot find reminder with ID: \(id)")
+            return
         }
-        completion(success)
+
+        do {
+            try eventStore.remove(reminder, commit: true)
+        } catch {
+            completion(error.localizedDescription)
+        }
+        completion(nil)
     }
 }
 

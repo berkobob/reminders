@@ -68,7 +68,7 @@ class MethodChannelReminders extends RemindersPlatform {
   }
 
   @override
-  Future<bool> deleteReminder(String id) async {
+  Future<String?> deleteReminder(String id) async {
     return await methodChannel.invokeMethod('deleteReminder', {'id': id});
   }
 }
