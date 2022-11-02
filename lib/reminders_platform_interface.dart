@@ -41,9 +41,8 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError('getAllLists() has not been implemented.');
   }
 
-  Future<List<Reminder>?> getRemindersInList(String id) async {
-    throw UnimplementedError(
-        'getRemindersInList(String) has not been implemented');
+  Future<List<Reminder>?> getReminders([String? id]) async {
+    throw UnimplementedError('getReminders(String?) has not been implemented');
   }
 
   Future<Reminder> createReminder(Reminder reminder) async {
@@ -51,11 +50,7 @@ abstract class RemindersPlatform extends PlatformInterface {
         'createReminder(Reminder) has not been implemented');
   }
 
-  Future<List<Reminder>?> getAllReminders() async {
-    throw UnimplementedError('getAllReminders() has not been implemented');
-  }
-
-  Future<String?> deleteReminder(String id) async {
-    throw UnimplementedError('deleteReminder() has not been implemented');
+  Future<String?> deleteReminder(String? id) async {
+    throw UnimplementedError('deleteReminder(String) has not been implemented');
   }
 }

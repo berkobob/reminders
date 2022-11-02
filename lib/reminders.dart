@@ -22,16 +22,12 @@ class Reminders {
     return RemindersPlatform.instance.getAllLists();
   }
 
-  Future<List<Reminder>?> getRemindersInList(String id) async {
-    return RemindersPlatform.instance.getRemindersInList(id);
+  Future<List<Reminder>?> getReminders([String? id]) async {
+    return RemindersPlatform.instance.getReminders(id);
   }
 
   Future<Reminder> createReminder(Reminder reminder) async {
     return RemindersPlatform.instance.createReminder(reminder);
-  }
-
-  Future<List<Reminder>?> getAllReminders() async {
-    return RemindersPlatform.instance.getAllReminders();
   }
 
   Future<String?> deleteReminder(String id) async {

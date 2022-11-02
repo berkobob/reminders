@@ -24,24 +24,9 @@ class Reminders {
         return String(data: jsonData ?? Data(), encoding: .utf8)
     }
 
-    func getAllReminders(_ completion: @escaping(String?) -> ()) {
-        let predicate: NSPredicate? = eventStore.predicateForReminders(in: nil)
-        if let predicate = predicate {
-            getReminders(predicate, completion)
-        }
-    }
-
-    func getReminders(_ predicate: NSPredicate, _ completion: @escaping(String?) -> ()) {
-        eventStore.fetchReminders(matching: predicate) { (_ reminders: [Any]?) -> Void in 
-        let rems = reminders as? [EKReminder] ?? [EKReminder]()
-        let result = rems.map { Reminder(reminder: $0) }
-        let json = try? JSONEncoder().encode(result)
-        completion(String(data: json ?? Data(), encoding: .utf8))
-        }
-    } 
-
-    func getRemindersInList(_ id: String, _ completion: @escaping(String?) -> ()) {
-        let calendar : [EKCalendar] = [eventStore.calendar(withIdentifier: id) ?? EKCalendar()]
+    func getReminders(_ id: String?, _ completion: @escaping(String?) -> ()) {
+        var calendar: [EKCalendar]? = nil
+        if let id = id { calendar = [eventStore.calendar(withIdentifier: id) ?? EKCalendar()] }
         let predicate: NSPredicate? = eventStore.predicateForReminders(in: calendar)
         if let predicate = predicate {
             eventStore.fetchReminders(matching: predicate) { (_ reminders: [Any]?) -> Void in 

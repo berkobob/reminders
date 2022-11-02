@@ -25,13 +25,10 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
       case "getAllLists":
         result(self.reminders.getAllLists())
 
-      case "getAllReminders":
-        result(self.reminders.getAllReminders())
-
-      case "getRemindersInList":
-        if let args = call.arguments as? [String: String] {
+      case "getReminders":
+        if let args = call.arguments as? [String: String?] {
           if let id = args["id"] {
-            self.reminders.getRemindersInList(id) { (reminders) in 
+            self.reminders.getReminders(id) { (reminders) in 
               result(reminders)
             }
           }
@@ -45,6 +42,15 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
             }
           }
         }
+
+    case "deleteReminder":
+      if let args = call.arguments as? [String: String] {
+        if let id = args["id"] {
+          self.reminders.deleteReminder(id) { (error) in 
+            result(error)
+          }
+        }
+      }
 
       default:
         result(FlutterMethodNotImplemented)

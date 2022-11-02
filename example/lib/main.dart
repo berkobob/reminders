@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
-                        final reminders = await Reminders().getAllReminders();
+                        final reminders = await Reminders().getReminders();
                         setState(() {
                           _rems = reminders ?? [];
                         });
@@ -98,7 +98,7 @@ class _MyAppState extends State<MyApp> {
                   ListofLists(
                       lists: _lists,
                       cb: (String id) async {
-                        final rems = await Reminders().getRemindersInList(id);
+                        final rems = await Reminders().getReminders(id);
                         setState(() {
                           _currentList = id;
                           _rems = rems ?? [];
