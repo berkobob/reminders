@@ -39,18 +39,21 @@ class Reminders {
     }
 
     func createReminder(_ json: [String: Any], _ completion: @escaping(String?) -> ()) {
-        let reminder = EKReminder(eventStore: eventStore)
-        guard let id: String = json["list"] as? String else {
-            completion("Calendar list ID missing or not a string: \(json["list"])")
-            return
+        let reminder: EKReminder
+
+        guard json["list"] != nil, 
+            let calendarID: String = json["list"] as? String, 
+            let list: EKCalendar = eventStore.calendar(withIdentifier: calendarID) else {
+                return completion("Invalid calendarID")
         }
 
-        guard let calendar = eventStore.calendar(withIdentifier: id) else {
-            completion("Cannot find a calendar list with ID: \(id)")
-            return
+        if let reminderID = json["id"] as? String {
+            reminder = eventStore.calendarItem(withIdentifier: reminderID) as! EKReminder
+        } else {
+            reminder = EKReminder(eventStore: eventStore)
         }
-
-        reminder.calendar = calendar
+        
+        reminder.calendar = list
         reminder.title = json["title"] as? String
         reminder.priority = json["priority"] as? Int ?? 0
         reminder.isCompleted = json["isCompleted"] as? Bool ?? false

@@ -53,5 +53,5 @@ class Reminder {
   @override
   String toString() =>
       '''List: ${list.title}\tTitle: $title\tdueDate: $dueDate\tPriority: 
-      $priority\tisComplete: $isCompleted\tNotes: $notes''';
+      $priority\tisComplete: $isCompleted\tNotes: $notes\tID: $id''';
 }

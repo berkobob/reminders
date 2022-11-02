@@ -141,13 +141,30 @@ class _MyAppState extends State<MyApp> {
                                 rem.title,
                                 overflow: TextOverflow.clip,
                               )),
-                              Text(rem.dueDate?.toString() ?? "No due date")
+                              GestureDetector(
+                                child: Text(
+                                    rem.dueDate?.toString() ?? "No due date"),
+                                onTap: () async {
+                                  rem.dueDate = DateTime.now();
+                                  await Reminders().createReminder(rem);
+                                  setState(() {
+                                    _rems = _rems;
+                                  });
+                                },
+                              )
                             ],
                           ),
                           subtitle: rem.notes != null ? Text(rem.notes!) : null,
-                          trailing: rem.isCompleted
-                              ? const Icon(Icons.check_box)
-                              : const Icon(Icons.check_box_outline_blank),
+                          trailing: GestureDetector(
+                            onTap: () async {
+                              rem.isCompleted = !rem.isCompleted;
+                              await Reminders().createReminder(rem);
+                              setState(() {});
+                            },
+                            child: rem.isCompleted
+                                ? const Icon(Icons.check_box)
+                                : const Icon(Icons.check_box_outline_blank),
+                          ),
                           onLongPress: () async {
                             final success =
                                 await Reminders().deleteReminder(rem.id!);
