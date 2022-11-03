@@ -15,3 +15,5 @@ samples, guidance on mobile development, and a full API reference.
 
 TODO: Remove default list and make drop down show default
 TODO: Move status to AppBar
+TODO: Review error reporting
+TODO: Publish

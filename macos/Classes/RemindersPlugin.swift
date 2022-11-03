@@ -35,10 +35,10 @@ public class RemindersPlugin: NSObject, FlutterPlugin {
         }
       }
 
-    case "createReminder":
+    case "saveReminder":
       if let args = call.arguments as? [String: Any] {
         if let reminder = args["reminder"] as? [String: Any] {
-          self.reminders.createReminder(reminder) { (error) in 
+          self.reminders.saveReminder(reminder) { (error) in 
             result(error)
           }
         }

@@ -38,7 +38,7 @@ class Reminders {
         }
     }
 
-    func createReminder(_ json: [String: Any], _ completion: @escaping(String?) -> ()) {
+    func saveReminder(_ json: [String: Any], _ completion: @escaping(String?) -> ()) {
         let reminder: EKReminder
 
         guard json["list"] != nil, 

@@ -106,20 +106,17 @@ class _MyAppState extends State<MyApp> {
                       }),
                   OutlinedButton(
                     onPressed: () async {
-                      final reminder = await Reminders().createReminder(
-                          Reminder(
-                              list: _lists.firstWhere(
-                                  (element) => element.id == _currentList),
-                              title: "test reminder 4",
-                              priority: 4,
-                              isCompleted: false,
-                              dueDate: DateTime(2023),
-                              notes: "Here is another note!"));
+                      final reminder = await Reminders().saveReminder(Reminder(
+                          list: _lists.firstWhere(
+                              (element) => element.id == _currentList),
+                          title: "test reminder 4",
+                          priority: 4,
+                          isCompleted: false,
+                          dueDate: DateTime(2023),
+                          notes: "Here is another note!"));
                       setState(() {
                         if (_currentList != null) {
                           _rems.add(reminder);
-                        } else {
-                          print('you need to choose a list first');
                         }
                       });
                     },
@@ -146,7 +143,7 @@ class _MyAppState extends State<MyApp> {
                                     rem.dueDate?.toString() ?? "No due date"),
                                 onTap: () async {
                                   rem.dueDate = DateTime.now();
-                                  await Reminders().createReminder(rem);
+                                  await Reminders().saveReminder(rem);
                                   setState(() {
                                     _rems = _rems;
                                   });
@@ -158,7 +155,7 @@ class _MyAppState extends State<MyApp> {
                           trailing: GestureDetector(
                             onTap: () async {
                               rem.isCompleted = !rem.isCompleted;
-                              await Reminders().createReminder(rem);
+                              await Reminders().saveReminder(rem);
                               setState(() {});
                             },
                             child: rem.isCompleted
@@ -172,9 +169,6 @@ class _MyAppState extends State<MyApp> {
                               setState(() {
                                 _rems.removeWhere((r) => r.id == rem.id);
                               });
-                            } else {
-                              print('Error deleting: $rem');
-                              print('Error message: $success');
                             }
                           },
                         ))

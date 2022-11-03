@@ -52,11 +52,9 @@ class MethodChannelReminders extends RemindersPlatform {
   }
 
   @override
-  Future<Reminder> createReminder(Reminder reminder) async {
-    print(reminder);
+  Future<Reminder> saveReminder(Reminder reminder) async {
     reminder.id = await methodChannel
-        .invokeMethod('createReminder', {'reminder': reminder.toJson()});
-    print("ID: ${reminder.id}");
+        .invokeMethod('saveReminder', {'reminder': reminder.toJson()});
     return reminder;
   }
 

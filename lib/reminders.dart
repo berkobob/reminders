@@ -26,8 +26,8 @@ class Reminders {
     return RemindersPlatform.instance.getReminders(id);
   }
 
-  Future<Reminder> createReminder(Reminder reminder) async {
-    return RemindersPlatform.instance.createReminder(reminder);
+  Future<Reminder> saveReminder(Reminder reminder) async {
+    return RemindersPlatform.instance.saveReminder(reminder);
   }
 
   Future<String?> deleteReminder(String id) async {
