@@ -18,7 +18,7 @@ class Reminders {
     return RemindersPlatform.instance.getDefaultList();
   }
 
-  Future<List<RemList>?> getAllLists() async {
+  Future<List<RemList>> getAllLists() async {
     return RemindersPlatform.instance.getAllLists();
   }
 

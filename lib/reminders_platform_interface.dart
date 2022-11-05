@@ -37,7 +37,7 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError('getDefaultList() has not been implemented.');
   }
 
-  Future<List<RemList>?> getAllLists() async {
+  Future<List<RemList>> getAllLists() async {
     throw UnimplementedError('getAllLists() has not been implemented.');
   }
 

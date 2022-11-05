@@ -34,7 +34,7 @@ class MethodChannelReminders extends RemindersPlatform {
   }
 
   @override
-  Future<List<RemList>?> getAllLists() async {
+  Future<List<RemList>> getAllLists() async {
     final lists = await methodChannel.invokeMethod('getAllLists');
     return jsonDecode(lists)
         .map<RemList>((list) => RemList.fromJson(list))

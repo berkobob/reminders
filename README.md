@@ -1,19 +1,50 @@
-# reminders
+# Reminders
 
-A new Flutter plugin project.
+This is a simply Flutter plugin to provider, read, write, edit and delete access to Apple Reminders on ios and MacOS.
 
-## Getting Started
+## API
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+When the `reminders` class is instantiated it requests permission to access the users reminders. If permission has not yet been given a popup will appear asking for permission. Success or failure can be determined:
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+`Future<bool> hasAccess()`
 
-TODO: Remove default list and make drop down show default
-TODO: Move status to AppBar
-TODO: Review error reporting
-TODO: Publish
+Apple calendars has a default Reminders List it uses if no list is specified when creating a new reminder. The list can be determined:
+
+`Future<RemList?> getDefaultList()`
+
+Apple reminders supports multiple lists of reminders. A complete list of lists can be determined:
+
+`Future<List<RemList>> getAllLists()`
+
+Get all the reminders in a List by passing the `RemList.id` to:
+
+`Future<List<Reminder>?> getReminders([String? id])`
+
+Attributes of a Reminder can be changed or a new Reminder can be created and then saved. Changes inlucde, but are not limited to, marking Reminders complete or not and setting due dates:
+
+`Future<Reminder> saveReminder(Reminder reminder)`
+
+Delete a reminder by passing the `Reminder.id` to:
+Future<String?> deleteReminder(String id) async`
+
+## iOS integration
+
+Add the following key/value pair to your Info.plist
+>
+>    `<key>NSRemindersUsageDescription</key>`
+> 
+>    `<string>INSERT_REASON_HERE</string>`
+
+
+## MacOS integration
+
+Add the following to `macos/Runner/DebugProfile.entitlements` and 'macos/Runner/Release.entitlements'
+
+>
+>   `<key>com.apple.security.personal-information.calendars</key>`
+>   `<true/>`
+>	
+
+### Android, Web, Windows & Linux integration
+
+As this plugin only supports Apple Reminders, there is no Android, Web, Windows or Linux integration.
