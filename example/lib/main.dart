@@ -95,13 +95,19 @@ class _ExampleAppState extends State<ExampleApp> {
                         children: [
                           Expanded(child: Text(reminder.title)),
                           GestureDetector(
-                              child: Text(reminder.dueDate?.toString() ??
-                                  'No date set'),
-                              onTap: () async {
-                                reminder.dueDate = DateTime.now();
-                                await reminders.saveReminder(reminder);
-                                setState(() {});
-                              })
+                            child: Text(
+                                reminder.dueDate?.toString() ?? 'No date set'),
+                            onTap: () async {
+                              reminder.dueDate = DateTime.now();
+                              await reminders.saveReminder(reminder);
+                              setState(() {});
+                            },
+                            onDoubleTap: () async {
+                              reminder.dueDate = null;
+                              await reminders.saveReminder(reminder);
+                              setState(() {});
+                            },
+                          )
                         ],
                       ),
                       subtitle:
