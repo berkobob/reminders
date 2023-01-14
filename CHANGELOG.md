@@ -1,3 +1,7 @@
+## 1.1.0 2023-01-14
+
+* Add remove dueDate from reminder
+  
 ## 1.0.0 2022-11-05
 
 * Add saveReminder to create reminders and save changes
