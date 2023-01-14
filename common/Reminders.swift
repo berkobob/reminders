@@ -59,7 +59,7 @@ class Reminders {
         reminder.isCompleted = json["isCompleted"] as? Bool ?? false
         reminder.notes = json["notes"] as? String
         if let date = json["dueDate"] as? [String: Int] {
-            reminder.dueDateComponents = DateComponents(year: date["year"], month: date["month"], day: date["day"], hour: date["hour"], minute: date["minute"] )
+            reminder.dueDateComponents = DateComponents(year: date["year"], month: date["month"], day: date["day"], hour: nil, minute: nil, second: nil )
         } else {
             reminder.dueDateComponents = nil
         }

@@ -98,7 +98,9 @@ class _ExampleAppState extends State<ExampleApp> {
                             child: Text(
                                 reminder.dueDate?.toString() ?? 'No date set'),
                             onTap: () async {
-                              reminder.dueDate = DateTime.now();
+                              final now = DateTime.now();
+                              reminder.dueDate =
+                                  DateTime(now.year, now.month, now.day);
                               await reminders.saveReminder(reminder);
                               setState(() {});
                             },

@@ -1,6 +1,8 @@
 ## 1.1.0 2023-01-14
 
 * Add remove dueDate from reminder
+* Update example to test remove date
+* Fix 'all day' bug
   
 ## 1.0.0 2022-11-05
 

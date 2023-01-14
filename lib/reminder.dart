@@ -28,7 +28,7 @@ class Reminder {
     if (json['dueDate'] != null) {
       final date = json['dueDate'];
       dueDate = DateTime(date['year']!, date['month']!, date['day']!,
-          date['hour'] ?? 00, date['minute'] ?? 00);
+          date['hour'] ?? 00, date['minute'] ?? 00, date['second'] ?? 00);
     }
   }
 
@@ -43,7 +43,8 @@ class Reminder {
                 'month': dueDate?.month,
                 'day': dueDate?.day,
                 'hour': dueDate?.hour,
-                'minute': dueDate?.minute
+                'minute': dueDate?.minute,
+                'second': dueDate?.second,
               },
         'priority': priority,
         'isCompleted': isCompleted,
