@@ -7,15 +7,23 @@ class Reminders {
 
     init() {
         defaultList = eventStore.defaultCalendarForNewReminders()
-        eventStore.requestAccess(to: EKEntityType.reminder, completion: {(granted, error) in 
-            if let error = error { print(error) }
-            self.hasAccess = granted ? true : false
-            })
     }
 
     func getDefaultList() -> String? {
         if let defaultList = defaultList { return List(list: defaultList).toJson() }
         return nil
+    }
+
+    func requestPermission(_ completion: @escaping(Bool) -> ()) {
+        eventStore.requestAccess(to: EKEntityType.reminder) { (granted: Bool, error: Error?) -> Void in
+            if granted {
+                self.hasAccess = true
+                completion(true)
+            } else {
+                self.hasAccess = false
+                completion(false)
+            }
+        }
     }
 
     func getAllLists() -> String? {
@@ -29,11 +37,11 @@ class Reminders {
         if let id = id { calendar = [eventStore.calendar(withIdentifier: id) ?? EKCalendar()] }
         let predicate: NSPredicate? = eventStore.predicateForReminders(in: calendar)
         if let predicate = predicate {
-            eventStore.fetchReminders(matching: predicate) { (_ reminders: [Any]?) -> Void in 
+            eventStore.fetchReminders(matching: predicate) { (_ reminders: [Any]?) -> Void in
             let rems = reminders as? [EKReminder] ?? [EKReminder]()
             let result = rems.map { Reminder(reminder: $0) }
             let json = try? JSONEncoder().encode(result)
-            completion(String(data: json ?? Data(), encoding: .utf8))      
+            completion(String(data: json ?? Data(), encoding: .utf8))
             }
         }
     }
@@ -41,8 +49,8 @@ class Reminders {
     func saveReminder(_ json: [String: Any], _ completion: @escaping(String?) -> ()) {
         let reminder: EKReminder
 
-        guard json["list"] != nil, 
-            let calendarID: String = json["list"] as? String, 
+        guard json["list"] != nil,
+            let calendarID: String = json["list"] as? String,
             let list: EKCalendar = eventStore.calendar(withIdentifier: calendarID) else {
                 return completion("Invalid calendarID")
         }
@@ -52,7 +60,7 @@ class Reminders {
         } else {
             reminder = EKReminder(eventStore: eventStore)
         }
-        
+
         reminder.calendar = list
         reminder.title = json["title"] as? String
         reminder.priority = json["priority"] as? Int ?? 0
@@ -92,7 +100,7 @@ struct Reminder : Codable {
     let id: String
     let title: String
     let dueDate: DateComponents?
-    let priority: Int 
+    let priority: Int
     let isCompleted: Bool
     let notes: String?
 
