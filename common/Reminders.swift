@@ -14,16 +14,16 @@ class Reminders {
         return nil
     }
 
-    func requestPermission(_ completion: @escaping(Bool) -> ()) {
-        eventStore.requestAccess(to: EKEntityType.reminder) { (granted: Bool, error: Error?) -> Void in
-            if granted {
-                self.hasAccess = true
-                completion(true)
-            } else {
-                self.hasAccess = false
-                completion(false)
-            }
+    func requestPermission() -> Bool {
+        var granted = false
+        let semaphore = DispatchSemaphore(value: 0)
+        eventStore.requestAccess(to: EKEntityType.reminder) { (success, error) in
+            granted = success
+            semaphore.signal()
         }
+        semaphore.wait()
+        hasAccess = granted
+        return granted
     }
 
     func getAllLists() -> String? {
