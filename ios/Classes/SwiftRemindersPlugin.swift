@@ -19,6 +19,9 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
       case "hasAccess":
         result(self.reminders.hasAccess)
 
+      case "requestPermission":
+        result(self.reminders.requestPermission())
+
       case "getDefaultList":
         result(self.reminders.getDefaultList())
 
@@ -28,7 +31,7 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
       case "getReminders":
         if let args = call.arguments as? [String: String?] {
           if let id = args["id"] {
-            self.reminders.getReminders(id) { (reminders) in 
+            self.reminders.getReminders(id) { (reminders) in
               result(reminders)
             }
           }
@@ -37,7 +40,7 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
       case "saveReminder":
         if let args = call.arguments as? [String: Any] {
           if let reminder = args["reminder"] as? [String: Any] {
-            self.reminders.saveReminder(reminder) { (error) in 
+            self.reminders.saveReminder(reminder) { (error) in
               result(error)
             }
           }
@@ -46,7 +49,7 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
     case "deleteReminder":
       if let args = call.arguments as? [String: String] {
         if let id = args["id"] {
-          self.reminders.deleteReminder(id) { (error) in 
+          self.reminders.deleteReminder(id) { (error) in
             result(error)
           }
         }

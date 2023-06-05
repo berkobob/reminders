@@ -14,6 +14,10 @@ class Reminders {
     return RemindersPlatform.instance.hasAccess();
   }
 
+  Future<bool> requestPermission() async {
+    return RemindersPlatform.instance.requestPermission();
+  }
+
   Future<RemList?> getDefaultList() async {
     return RemindersPlatform.instance.getDefaultList();
   }

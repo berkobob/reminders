@@ -27,6 +27,12 @@ class MethodChannelReminders extends RemindersPlatform {
   }
 
   @override
+  Future<bool> requestPermission() async {
+    final access = await methodChannel.invokeMethod('requestPermission');
+    return access;
+  }
+
+  @override
   Future<RemList?> getDefaultList() async {
     final defaultList = await methodChannel.invokeMethod('getDefaultList');
     if (defaultList == null) return null;

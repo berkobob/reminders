@@ -16,6 +16,9 @@ class _ExampleAppState extends State<ExampleApp> {
 
   @override
   Widget build(BuildContext context) {
+    //request permission to access Reminders
+    reminders.requestPermission();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
