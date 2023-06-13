@@ -33,11 +33,19 @@ Future<String?> deleteReminder(String id) async`
 ## iOS integration
 
 Add the following key/value pair to your Info.plist
+
+iOS 17 or BELOW: 
 >
 >    `<key>NSRemindersUsageDescription</key>`
 >
 >    `<string>INSERT_REASON_HERE</string>`
 
+iOS 17 or ABOVE:
+>    `<key>NSRemindersFullAccessUsageDescription</key>`
+>
+>    `<string>INSERT_REASON_HERE</string>`
+
+For now (iOS 17), you do not need the second entry but it is recommended you do so as 'NSRemindersUsageDescription' is deprecated and won't be supported in iOS 18+ which means your app will not be able to request permission!
 
 ## MacOS integration
 
