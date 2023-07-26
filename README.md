@@ -11,11 +11,15 @@ This will prompt a system alert dialog with the text you provided from 'NSRemind
 
 `Future<bool> hasAccess()`
 
-Apple calendars has a default Reminders List it uses if no list is specified when creating a new reminder. The list can be determined:
+Apple Calendars has a default Reminders List it uses if no list is specified when creating a new reminder. The list ID can be determined:
+
+`Future<String?> getDefaultListId()`
+
+Apple Reminders support multiple lists of reminders. A complete list of lists can be determined:
 
 `Future<RemList?> getDefaultList()`
 
-Apple reminders supports multiple lists of reminders. A complete list of lists can be determined:
+Apple Reminders support multiple lists of reminders. A complete list of lists can be determined:
 
 `Future<List<RemList>> getAllLists()`
 
@@ -23,7 +27,7 @@ Get all the reminders in a List by passing the `RemList.id` to:
 
 `Future<List<Reminder>?> getReminders([String? id])`
 
-Attributes of a Reminder can be changed or a new Reminder can be created and then saved. Changes inlucde, but are not limited to, marking Reminders complete or not and setting due dates:
+Attributes of a Reminder can be changed or a new Reminder can be created and then saved. Changes induce, but are not limited to, marking Reminders complete or not and setting due dates:
 
 `Future<Reminder> saveReminder(Reminder reminder)`
 
@@ -34,7 +38,7 @@ Future<String?> deleteReminder(String id) async`
 
 Add the following key/value pair to your Info.plist
 
-iOS 17 or BELOW: 
+iOS 17 or BELOW:
 >
 >    `<key>NSRemindersUsageDescription</key>`
 >
@@ -58,4 +62,4 @@ Add the following to `macos/Runner/DebugProfile.entitlements` and 'macos/Runner/
 
 ### Android, Web, Windows & Linux integration
 
-As this plugin only supports Apple Reminders, there is no Android, Web, Windows or Linux integration.
+As this plugin only supports Apple Reminders, there is no Android, Web, Windows, or Linux integration.

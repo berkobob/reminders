@@ -18,6 +18,10 @@ class Reminders {
     return RemindersPlatform.instance.requestPermission();
   }
 
+  Future<String> getDefaultListId() async {
+    return RemindersPlatform.instance.getDefaultListId();
+  }
+
   Future<RemList?> getDefaultList() async {
     return RemindersPlatform.instance.getDefaultList();
   }

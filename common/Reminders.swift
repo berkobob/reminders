@@ -14,6 +14,13 @@ class Reminders {
         return nil
     }
 
+    func getDefaultListId() -> String? {
+        if let defaultList = defaultList {
+            return defaultList.calendarIdentifier
+        }
+        return nil
+    }
+
     func requestPermission() -> Bool {
         var granted = false
         let semaphore = DispatchSemaphore(value: 0)

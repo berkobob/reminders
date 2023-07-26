@@ -37,6 +37,10 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError('requestPermission() has not been implemented.');
   }
 
+  Future<String> getDefaultListId() async {
+    throw UnimplementedError('getDefaultListId() has not been implemented.');
+  }
+
   Future<RemList?> getDefaultList() async {
     throw UnimplementedError('getDefaultList() has not been implemented.');
   }
