@@ -49,7 +49,7 @@ iOS 17 or ABOVE:
 >
 >    `<string>INSERT_REASON_HERE</string>`
 
-For now (iOS 17), you do not need the second entry but it is recommended you do so as 'NSRemindersUsageDescription' is deprecated and won't be supported in iOS 18+ which means your app will not be able to request permission!
+Warning: Although `NSRemindersUsageDescription` is forward compatible with iOS 17 , this does not appear to be the case with iPad OS 17 when compiling with Xcode 15. TLDR: just add both keys regardless!
 
 ## MacOS integration
 

@@ -1,14 +1,18 @@
+## 1.2.0 2023-09-24
+
+* Support for iOS & iPadOS 17's new permission handler
+* Breaking Changes: You need to add additional keys to your info.plist as seen in docs
 ## 1.1.0 2023-01-14
 
 * Add remove dueDate from reminder
 * Update example to test remove date
 * Fix 'all day' bug
-  
+
 ## 1.0.0 2022-11-05
 
 * Add saveReminder to create reminders and save changes
 * Full version
-  
+
 ## 0.1.0 2020-12-16
 
 * Update README with correct Key Value pair in info.plist

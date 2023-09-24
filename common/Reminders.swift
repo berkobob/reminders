@@ -24,9 +24,19 @@ class Reminders {
     func requestPermission() -> Bool {
         var granted = false
         let semaphore = DispatchSemaphore(value: 0)
-        eventStore.requestAccess(to: EKEntityType.reminder) { (success, error) in
-            granted = success
-            semaphore.signal()
+        if #available(iOS 17.0.0, *) {
+
+            eventStore.requestFullAccessToReminders(completion: { (success, error) in
+                granted = success
+                semaphore.signal()
+            })
+
+        }else{
+            eventStore.requestAccess(to: EKEntityType.reminder) { (success, error) in
+                granted = success
+                semaphore.signal()
+            }
+
         }
         semaphore.wait()
         hasAccess = granted
@@ -45,10 +55,10 @@ class Reminders {
         let predicate: NSPredicate? = eventStore.predicateForReminders(in: calendar)
         if let predicate = predicate {
             eventStore.fetchReminders(matching: predicate) { (_ reminders: [Any]?) -> Void in
-            let rems = reminders as? [EKReminder] ?? [EKReminder]()
-            let result = rems.map { Reminder(reminder: $0) }
-            let json = try? JSONEncoder().encode(result)
-            completion(String(data: json ?? Data(), encoding: .utf8))
+                let rems = reminders as? [EKReminder] ?? [EKReminder]()
+                let result = rems.map { Reminder(reminder: $0) }
+                let json = try? JSONEncoder().encode(result)
+                completion(String(data: json ?? Data(), encoding: .utf8))
             }
         }
     }
@@ -57,9 +67,9 @@ class Reminders {
         let reminder: EKReminder
 
         guard json["list"] != nil,
-            let calendarID: String = json["list"] as? String,
-            let list: EKCalendar = eventStore.calendar(withIdentifier: calendarID) else {
-                return completion("Invalid calendarID")
+              let calendarID: String = json["list"] as? String,
+              let list: EKCalendar = eventStore.calendar(withIdentifier: calendarID) else {
+            return completion("Invalid calendarID")
         }
 
         if let reminderID = json["id"] as? String {

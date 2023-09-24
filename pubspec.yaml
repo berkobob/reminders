@@ -1,6 +1,6 @@
 name: reminders
 description: Read, Edit, Create and Delete Apple Reminders
-version: 1.0.0
+version: 1.2.0
 homepage: https://github.com/berkobob/reminders
 
 environment:
