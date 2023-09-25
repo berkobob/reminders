@@ -22,6 +22,9 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
       case "requestPermission":
         result(self.reminders.requestPermission())
 
+      case "getDefaultListId":
+        result(self.reminders.getDefaultListId())
+
       case "getDefaultList":
         result(self.reminders.getDefaultList())
 

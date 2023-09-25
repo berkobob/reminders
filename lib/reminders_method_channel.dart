@@ -33,6 +33,12 @@ class MethodChannelReminders extends RemindersPlatform {
   }
 
   @override
+  Future<String> getDefaultListId() async {
+    final access = await methodChannel.invokeMethod('getDefaultListId');
+    return access;
+  }
+
+  @override
   Future<RemList?> getDefaultList() async {
     final defaultList = await methodChannel.invokeMethod('getDefaultList');
     if (defaultList == null) return null;
