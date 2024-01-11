@@ -26,10 +26,14 @@ class Reminders {
         let semaphore = DispatchSemaphore(value: 0)
         if #available(iOS 17.0.0, *) {
 
-            eventStore.requestFullAccessToReminders(completion: { (success, error) in
-                granted = success
-                semaphore.signal()
-            })
+            if #available(macOS 14.0, *) {
+                eventStore.requestFullAccessToReminders(completion: { (success, error) in
+                    granted = success
+                    semaphore.signal()
+                })
+            } else {
+                // Fallback on earlier versions
+            }
 
         }else{
             eventStore.requestAccess(to: EKEntityType.reminder) { (success, error) in
