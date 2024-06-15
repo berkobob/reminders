@@ -20,6 +20,9 @@ public class RemindersPlugin: NSObject, FlutterPlugin {
     case "hasAccess": 
       result(self.reminders.hasAccess)
 
+    case "requestPermission":
+      result(self.reminders.requestPermission())
+
     case "getDefaultList":
       result(self.reminders.getDefaultList())
 
