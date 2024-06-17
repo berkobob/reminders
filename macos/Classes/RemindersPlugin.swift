@@ -4,6 +4,7 @@ import FlutterMacOS
 public class RemindersPlugin: NSObject, FlutterPlugin {
 
   let reminders = Reminders()
+  let calendars = Events()
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "reminders", binaryMessenger: registrar.messenger)
@@ -55,6 +56,17 @@ public class RemindersPlugin: NSObject, FlutterPlugin {
           }
         }
       }
+
+      case "getDefaultCalendar":
+        result(self.calendars.getDefaultCalendar())
+
+      case "getAllCalendars":
+        result(self.calendars.getAllCalendars())
+
+      case "getEvents":
+        self.calendars.getEvents() { (event) in
+          result(event)
+          }
       
     default:
       result(FlutterMethodNotImplemented)

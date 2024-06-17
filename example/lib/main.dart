@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reminders/events.dart';
 import 'package:reminders/reminders.dart';
 
 void main() => runApp(const ExampleApp());
@@ -12,12 +13,17 @@ class ExampleApp extends StatefulWidget {
 
 class _ExampleAppState extends State<ExampleApp> {
   final reminders = Reminders();
+  final events = Events();
   RemList? currentList;
 
   @override
   Widget build(BuildContext context) {
     //request permission to access Reminders
     reminders.requestPermission();
+
+    events.getDefaultCalendar().then(print);
+    events.getAllCalendars().then(print);
+    events.getEvents().then(print);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

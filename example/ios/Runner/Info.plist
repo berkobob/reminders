@@ -49,5 +49,11 @@
 	<true/>
 	<key>NSRemindersUsageDescription</key>
 	<string>Grant access to Reminders</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>To include calendar events</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>To include calendar events</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>To include calendar events</string>
 </dict>
 </plist>
