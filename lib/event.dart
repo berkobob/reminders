@@ -10,13 +10,13 @@ class Event {
   Event.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title'],
-        startDate = DateTime.fromMicrosecondsSinceEpoch(json['startDate']),
-        endDate = DateTime.fromMillisecondsSinceEpoch(json['endDate']),
+        startDate = DateTime.parse((json['startDate'])),
+        endDate = DateTime.parse((json['endDate'])),
         location = json['location'],
         isAllDay = json['isAllDay'],
         notes = json['notes'];
 
   @override
   String toString() =>
-      'Event: $title on $startDate to $endDate at $location. All day: $isAllDay. Notes: $notes';
+      'Event: $title on $startDate to $endDate at $location and lasts ${endDate.difference(startDate)}. All day: $isAllDay. Notes: $notes';
 }

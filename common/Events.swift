@@ -17,13 +17,17 @@ class Events {
         } else {
             print(status.rawValue)
             if #available(macOS 14.0, *) {
-                eventStore.requestFullAccessToEvents { success, error in
-                    if success && error == nil {
-                        print("Access has been granted.")
-                    } else {
-                        print(error as Any)
-                        print("Access request failed with error: \(error?.localizedDescription ?? "Unknown error")")
+                if #available(iOS 17.0, *) {
+                    eventStore.requestFullAccessToEvents { success, error in
+                        if success && error == nil {
+                            print("Access has been granted.")
+                        } else {
+                            print(error as Any)
+                            print("Access request failed with error: \(error?.localizedDescription ?? "Unknown error")")
+                        }
                     }
+                } else {
+                    // Fallback on earlier versions
                 }
             } else {
                 // Fallback on earlier versions
@@ -83,8 +87,8 @@ struct Calendar : Codable {
 struct Event : Codable {
     let id: String
     let title: String
-    let startDate: Date
-    let endDate: Date
+    let startDate: String
+    let endDate: String
     let location: String?
     let isAllDay: Bool
     let notes: String?
@@ -92,8 +96,8 @@ struct Event : Codable {
     init(event : EKEvent) {
         self.id = event.calendarItemIdentifier
         self.title = event.title
-        self.startDate = event.startDate
-        self.endDate = event.endDate
+        self.startDate = event.startDate.description
+        self.endDate = event.endDate.description
         self.location = event.location
         self.isAllDay = event.isAllDay
         self.notes = event.notes
