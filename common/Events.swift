@@ -3,27 +3,32 @@ import EventKit
 class Events {
     let eventStore: EKEventStore = EKEventStore()
     let defaultCalendar: EKCalendar?
+    var hasAccess: Bool = false
 
     init() {
         defaultCalendar = eventStore.defaultCalendarForNewEvents
         print(EKEventStore.authorizationStatus(for: .event))
-        requestAccess()
     }
 
-     func requestAccess() {
+    func hasEventsAccess() -> Bool {
+        return EKEventStore.authorizationStatus(for: .event) == .authorized
+    }
+
+     func requestAccess() -> String? {
         let status = EKEventStore.authorizationStatus(for: .event)
         if status == .authorized {
-            print("Access is already granted.")
+            return "Already authorized"
         } else {
             print(status.rawValue)
             if #available(macOS 14.0, *) {
                 if #available(iOS 17.0, *) {
                     eventStore.requestFullAccessToEvents { success, error in
                         if success && error == nil {
-                            print("Access has been granted.")
+                            self.hasAccess = true
                         } else {
                             print(error as Any)
                             print("Access request failed with error: \(error?.localizedDescription ?? "Unknown error")")
+                            self.hasAccess = false
                         }
                     }
                 } else {
@@ -33,6 +38,7 @@ class Events {
                 // Fallback on earlier versions
             }
         }
+        return nil
      }
 
     func getDefaultCalendar() -> String? {

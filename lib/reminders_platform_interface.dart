@@ -71,6 +71,14 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError('deleteReminder(String) has not been implemented');
   }
 
+  Future<String?> requestAccess() async {
+    throw UnimplementedError('requestAccess() has not been implemented');
+  }
+
+  Future<bool> hasEventsAccess() async {
+    throw UnimplementedError('hasEventsAccess() has not been implemented');
+  }
+
   Future<String?> getDefaultCalendar() async {
     throw UnimplementedError('getDefaultCalendar has not been implemented');
   }

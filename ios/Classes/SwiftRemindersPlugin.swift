@@ -59,6 +59,12 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
         }
       }
 
+      case "requestAccess":
+        result (self.calendars.requestAccess())
+
+      case "hasEventsAccess":
+        result(self.calendars.hasEventsAccess())
+
       case "getDefaultCalendar":
         result(self.calendars.getDefaultCalendar())
 

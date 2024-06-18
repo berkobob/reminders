@@ -14,6 +14,16 @@ class MethodChannelEvents extends RemindersPlatform {
   final methodChannel = const MethodChannel('reminders');
 
   @override
+  Future<bool> hasEventsAccess() async {
+    return await methodChannel.invokeMethod("hasEventsAccess");
+  }
+
+  @override
+  Future<String?> requestAccess() async {
+    return await methodChannel.invokeMethod("requestAccess");
+  }
+
+  @override
   Future<String?> getDefaultCalendar() async {
     final defaultCalendar =
         await methodChannel.invokeMethod('getDefaultCalendar');
