@@ -69,10 +69,14 @@ public class RemindersPlugin: NSObject, FlutterPlugin {
       case "getAllCalendars":
         result(self.calendars.getAllCalendars())
 
-      case "getEvents":
-        self.calendars.getEvents() { (event) in
-          result(event)
+       case "getEvents":
+        if let args = call.arguments as? [String: String?] {
+          if let id = args["id"] {
+              self.calendars.getEvents(id) { (event) in
+                result(event)
+            }
           }
+        }
       
     default:
       result(FlutterMethodNotImplemented)

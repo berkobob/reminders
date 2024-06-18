@@ -25,7 +25,9 @@ class _ExampleAppState extends State<ExampleApp> {
     events.getAllCalendars().then(print);
     events.hasEventsAccess().then(print);
     events.requestAccess().then(print);
-    // events.getEvents().then((events) => events!.forEach(print));
+    events
+        .getEvents('A84E394E-C85B-4961-B878-EACB9C247020')
+        .then((events) => events!.forEach(print));
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

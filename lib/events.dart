@@ -19,7 +19,7 @@ class Events {
     return RemindersPlatform.events.getAllCalendars();
   }
 
-  Future<List<Event>?> getEvents() async {
-    return RemindersPlatform.events.getEvents();
+  Future<List<Event>?> getEvents([String? id]) async {
+    return RemindersPlatform.events.getEvents(id);
   }
 }

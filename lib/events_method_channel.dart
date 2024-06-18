@@ -43,8 +43,8 @@ class MethodChannelEvents extends RemindersPlatform {
   }
 
   @override
-  Future<List<Event>?> getEvents() async {
-    final events = await methodChannel.invokeMethod('getEvents');
+  Future<List<Event>?> getEvents([String? id]) async {
+    final events = await methodChannel.invokeMethod('getEvents', {'id': id});
     if (events == null) return null;
     final json = jsonDecode(events);
     return json.map<Event>((json) => Event.fromJson(json)).toList();

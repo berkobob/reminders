@@ -14,7 +14,7 @@ class Events {
         return EKEventStore.authorizationStatus(for: .event) == .authorized
     }
 
-     func requestAccess() -> String? {
+    func requestAccess() -> String? {
         let status = EKEventStore.authorizationStatus(for: .event)
         if status == .authorized {
             return "Already authorized"
@@ -39,7 +39,7 @@ class Events {
             }
         }
         return nil
-     }
+    }
 
     func getDefaultCalendar() -> String? {
         if let defaultCalendar = defaultCalendar { return Calendar(calendar: defaultCalendar).toJson() }
@@ -52,7 +52,31 @@ class Events {
         return String(data: jsonData ?? Data(), encoding: .utf8)
     }
 
-    func getEvents(_ completion: @escaping(String?) -> ()) {
+    func getEvents(_ id: String?, _ completion: @escaping(String?) -> ()) {
+        var calendars: [EKCalendar]? = nil
+        if let id = id { calendars = [eventStore.calendar(withIdentifier: id) ?? EKCalendar()] }
+        else { calendars = [defaultCalendar! ]}
+
+        let oneYearAgo = Date(timeIntervalSinceNow: -365*24*60*60)
+        let oneYearAfter = Date(timeIntervalSinceNow: 365*24*60*60)
+        let predicate: NSPredicate = eventStore.predicateForEvents(withStart: oneYearAgo, end: oneYearAfter, calendars: calendars)
+
+        var events = [Event]()
+        eventStore.enumerateEvents(matching: predicate) { (ekEvent, stop) in
+            let event = Event(event: ekEvent)
+            events.append(event)
+        }
+
+        if let jsonData = try? JSONEncoder().encode(events) {
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            completion(jsonString)
+        } else {
+            completion(nil)
+        }
+
+    }
+
+    func getDefaultEvents(_ completion: @escaping(String?) -> ()) {
         let oneYearAgo = Date(timeIntervalSinceNow: -365*24*60*60)
         let oneYearAfter = Date(timeIntervalSinceNow: 365*24*60*60)
         let predicate: NSPredicate = eventStore.predicateForEvents(withStart: oneYearAgo, end: oneYearAfter, calendars: [defaultCalendar!])

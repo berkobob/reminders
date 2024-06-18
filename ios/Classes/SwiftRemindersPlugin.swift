@@ -50,7 +50,7 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
           }
         }
 
-    case "deleteReminder":
+      case "deleteReminder":
       if let args = call.arguments as? [String: String] {
         if let id = args["id"] {
           self.reminders.deleteReminder(id) { (error) in
@@ -72,11 +72,15 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
         result(self.calendars.getAllCalendars())
 
       case "getEvents":
-        result(self.calendars.getEvents() { (event) in
-          result(event)
-          })
+        if let args = call.arguments as? [String: String?] {
+          if let id = args["id"] {
+              self.calendars.getEvents(id) { (event) in
+                result(event)
+            }
+          }
+        }
 
-      default:
+    default:
         result(FlutterMethodNotImplemented)
     }
   }

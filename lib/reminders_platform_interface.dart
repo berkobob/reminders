@@ -87,7 +87,7 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError('getAllCalendars has not been implemented');
   }
 
-  Future<List<Event>?> getEvents() async {
+  Future<List<Event>?> getEvents([String? id]) async {
     throw UnimplementedError('getEvents has not been implemented');
   }
 }
