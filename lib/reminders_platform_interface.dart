@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'calendar.dart';
+import 'event.dart';
 import 'events_method_channel.dart';
 import 'reminder.dart';
 import 'reminders_list.dart';
@@ -78,7 +79,7 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError('getAllCalendars has not been implemented');
   }
 
-  Future<String?> getEvents() async {
+  Future<List<Event>?> getEvents() async {
     throw UnimplementedError('getEvents has not been implemented');
   }
 }

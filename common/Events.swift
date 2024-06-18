@@ -43,21 +43,25 @@ class Events {
     }
 
     func getEvents(_ completion: @escaping(String?) -> ()) {
-        let predicate: NSPredicate = eventStore.predicateForEvents(withStart: Date.distantPast, end: Date.distantFuture, calendars: [defaultCalendar!])
-        var rawEvents: [EKEvent]? = nil
-        rawEvents = eventStore.events(matching: predicate);
-        let events = rawEvents ?? [EKEvent]()
-        let results = events.map { Event(event: $0) }
-        let json = try? JSONEncoder().encode(results)
-        completion(String(data: json ?? Data(), encoding: .utf8))
-        // if let predicate = predicate {
-        //     eventStore.events(matching: predicate) { (_ events: [Any]?) -> Void in
-        //         let e = events as? [EKEvent] ?? [EKEvent]()
-        //         let result = e.map { Event(event: $0) }
-        //         let json = try? JSONEncoder().encode(result)
-        //         completion(String(data: json ?? Data(), encoding: .utf8))
-        //     }
-        // }
+        let oneYearAgo = Date(timeIntervalSinceNow: -365*24*60*60)
+        let oneYearAfter = Date(timeIntervalSinceNow: 365*24*60*60)
+        let predicate: NSPredicate = eventStore.predicateForEvents(withStart: oneYearAgo, end: oneYearAfter, calendars: [defaultCalendar!])
+
+        var events = [Event]()
+        
+        // Enumerate events matching the predicate
+        eventStore.enumerateEvents(matching: predicate) { (ekEvent, stop) in
+            let event = Event(event: ekEvent)
+            events.append(event)
+        }
+        
+        // Encode the result array to JSON
+        if let jsonData = try? JSONEncoder().encode(events) {
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            completion(jsonString)
+        } else {
+            completion(nil)
+        }
     }
 }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'event.dart';
 import 'reminders_platform_interface.dart';
 import 'calendar.dart';
 
@@ -32,9 +33,10 @@ class MethodChannelEvents extends RemindersPlatform {
   }
 
   @override
-  Future<String?> getEvents() async {
+  Future<List<Event>?> getEvents() async {
     final events = await methodChannel.invokeMethod('getEvents');
     if (events == null) return null;
-    return events;
+    final json = jsonDecode(events);
+    return json.map<Event>((json) => Event.fromJson(json)).toList();
   }
 }

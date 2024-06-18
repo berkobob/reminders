@@ -1,4 +1,5 @@
 import 'calendar.dart';
+import 'event.dart';
 import 'reminders_platform_interface.dart';
 
 class Events {
@@ -10,7 +11,7 @@ class Events {
     return RemindersPlatform.events.getAllCalendars();
   }
 
-  Future<String?> getEvents() async {
+  Future<List<Event>?> getEvents() async {
     return RemindersPlatform.events.getEvents();
   }
 }
