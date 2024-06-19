@@ -7,7 +7,10 @@ class Events {
 
     init() {
         defaultCalendar = eventStore.defaultCalendarForNewEvents
-        print(EKEventStore.authorizationStatus(for: .event))
+        let status = EKEventStore.authorizationStatus(for: .event)
+        print("Status: \(status)")
+        hasAccess = status == .authorized
+        print("Access: \(hasAccess)")
     }
 
     func hasEventsAccess() -> Bool {
@@ -17,14 +20,17 @@ class Events {
     func requestAccess() -> String? {
         let status = EKEventStore.authorizationStatus(for: .event)
         if status == .authorized {
-            return "Already authorized"
+            self.hasAccess = true
+            print( "Already authorized")
         } else {
-            print(status.rawValue)
+            self.hasAccess = false
+            print("Status \(status)")
             if #available(macOS 14.0, *) {
                 if #available(iOS 17.0, *) {
                     eventStore.requestFullAccessToEvents { success, error in
                         if success && error == nil {
                             self.hasAccess = true
+                            print("Access granted")
                         } else {
                             print(error as Any)
                             print("Access request failed with error: \(error?.localizedDescription ?? "Unknown error")")
@@ -32,13 +38,15 @@ class Events {
                         }
                     }
                 } else {
+                    print("Trying for ios 17.0 or later")
                     // Fallback on earlier versions
                 }
             } else {
+                    print("Trying for macOS 14.0 or later")
                 // Fallback on earlier versions
             }
         }
-        return nil
+        return "\(self.hasAccess)"
     }
 
     func getDefaultCalendar() -> String? {
@@ -53,13 +61,17 @@ class Events {
     }
 
     func getEvents(_ id: String?, _ completion: @escaping(String?) -> ()) {
-        var calendars: [EKCalendar]? = nil
-        if let id = id { calendars = [eventStore.calendar(withIdentifier: id) ?? EKCalendar()] }
-        else { calendars = [defaultCalendar! ]}
+//        print(id)
+//        var calendars: [EKCalendar]? = nil
+//        if let id = id { calendars = [eventStore.calendar(withIdentifier: id)] }
+//        else { calendars = [defaultCalendar! ]}
+        
+        guard var calendar = defaultCalendar else { return }
+        if let id = id {calendar = eventStore.calendar(withIdentifier: id) ?? defaultCalendar! }
 
         let oneYearAgo = Date(timeIntervalSinceNow: -365*24*60*60)
         let oneYearAfter = Date(timeIntervalSinceNow: 365*24*60*60)
-        let predicate: NSPredicate = eventStore.predicateForEvents(withStart: oneYearAgo, end: oneYearAfter, calendars: calendars)
+        let predicate: NSPredicate = eventStore.predicateForEvents(withStart: oneYearAgo, end: oneYearAfter, calendars: [calendar])
 
         var events = [Event]()
         eventStore.enumerateEvents(matching: predicate) { (ekEvent, stop) in
