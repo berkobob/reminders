@@ -1,5 +1,7 @@
 import 'calendar.dart';
+export 'calendar.dart';
 import 'event.dart';
+export 'event.dart';
 import 'reminders_platform_interface.dart';
 
 class Events {
