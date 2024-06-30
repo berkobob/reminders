@@ -1,4 +1,7 @@
-## 2.0.1 2026-06-15
+## 2.0.2 2024-06-30
+* Fix access always true bug in ios version
+
+## 2.0.1 2024-06-15
 * Add `requestPermission` to MacOS plugin interface
 
 ## 2.0.0 2024-01-11
