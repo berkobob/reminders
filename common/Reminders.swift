@@ -2,7 +2,7 @@ import EventKit
 
 class Reminders {
     let eventStore: EKEventStore = EKEventStore()
-    var hasAccess: Bool = true
+    var hasAccess: Bool = false
     let defaultList: EKCalendar?
 
     init() {
