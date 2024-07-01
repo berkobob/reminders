@@ -2,7 +2,7 @@ import EventKit
 
 class Reminders {
     let eventStore: EKEventStore = EKEventStore()
-    var hasAccess: Bool = true
+    var hasAccess: Bool = false
     let defaultList: EKCalendar?
 
     init() {
@@ -26,10 +26,14 @@ class Reminders {
         let semaphore = DispatchSemaphore(value: 0)
         if #available(iOS 17.0.0, *) {
 
-            eventStore.requestFullAccessToReminders(completion: { (success, error) in
-                granted = success
-                semaphore.signal()
-            })
+            if #available(macOS 14.0, *) {
+                eventStore.requestFullAccessToReminders(completion: { (success, error) in
+                    granted = success
+                    semaphore.signal()
+                })
+            } else {
+                // Fallback on earlier versions
+            }
 
         }else{
             eventStore.requestAccess(to: EKEntityType.reminder) { (success, error) in
@@ -84,7 +88,7 @@ class Reminders {
         reminder.isCompleted = json["isCompleted"] as? Bool ?? false
         reminder.notes = json["notes"] as? String
         if let date = json["dueDate"] as? [String: Int] {
-            reminder.dueDateComponents = DateComponents(year: date["year"], month: date["month"], day: date["day"], hour: nil, minute: nil, second: nil )
+            reminder.dueDateComponents = DateComponents(year: date["year"], month: date["month"], day: date["day"], hour: date["hour"], minute: date["minute"], second: date["second"] )
         } else {
             reminder.dueDateComponents = nil
         }

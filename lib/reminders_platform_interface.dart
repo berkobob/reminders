@@ -1,5 +1,8 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+import 'calendar.dart';
+import 'event.dart';
+import 'events_method_channel.dart';
 import 'reminder.dart';
 import 'reminders_list.dart';
 import 'reminders_method_channel.dart';
@@ -10,19 +13,26 @@ abstract class RemindersPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static RemindersPlatform _instance = MethodChannelReminders();
+  static RemindersPlatform _reminders = MethodChannelReminders();
+  static RemindersPlatform _events = MethodChannelEvents();
 
   /// The default instance of [RemindersPlatform] to use.
   ///
   /// Defaults to [MethodChannelReminders].
-  static RemindersPlatform get instance => _instance;
+  static RemindersPlatform get reminders => _reminders;
+  static RemindersPlatform get events => _events;
 
   /// Platform-specific implementations should set this with their own
   /// platform-specific class that extends [RemindersPlatform] when
   /// they register themselves.
-  static set instance(RemindersPlatform instance) {
+  static set reminders(RemindersPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
-    _instance = instance;
+    _reminders = instance;
+  }
+
+  static set events(RemindersPlatform instance) {
+    PlatformInterface.verifyToken(instance, _token);
+    _events = instance;
   }
 
   Future<String?> getPlatformVersion() async {
@@ -59,5 +69,25 @@ abstract class RemindersPlatform extends PlatformInterface {
 
   Future<String?> deleteReminder(String? id) async {
     throw UnimplementedError('deleteReminder(String) has not been implemented');
+  }
+
+  Future<String?> requestAccess() async {
+    throw UnimplementedError('requestAccess() has not been implemented');
+  }
+
+  Future<bool> hasEventsAccess() async {
+    throw UnimplementedError('hasEventsAccess() has not been implemented');
+  }
+
+  Future<String?> getDefaultCalendar() async {
+    throw UnimplementedError('getDefaultCalendar has not been implemented');
+  }
+
+  Future<List<Calendar>?> getAllCalendars() async {
+    throw UnimplementedError('getAllCalendars has not been implemented');
+  }
+
+  Future<List<Event>?> getEvents([String? id]) async {
+    throw UnimplementedError('getEvents has not been implemented');
   }
 }

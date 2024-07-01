@@ -1,7 +1,18 @@
+## 2.0.2 2024-06-30
+* Fix access always true bug in ios version
+
+## 2.0.1 2024-06-15
+* Add `requestPermission` to MacOS plugin interface
+
+## 2.0.0 2024-01-11
+* Update for Flutter 3
+* Refresh packages
+
 ## 1.2.0 2023-09-24
 
 * Support for iOS & iPadOS 17's new permission handler
 * Breaking Changes: You need to add additional keys to your info.plist as seen in docs
+  
 ## 1.1.0 2023-01-14
 
 * Add remove dueDate from reminder

@@ -7,38 +7,38 @@ import 'reminders_platform_interface.dart';
 
 class Reminders {
   Future<String?> getPlatformVersion() {
-    return RemindersPlatform.instance.getPlatformVersion();
+    return RemindersPlatform.reminders.getPlatformVersion();
   }
 
   Future<bool> hasAccess() async {
-    return RemindersPlatform.instance.hasAccess();
+    return RemindersPlatform.reminders.hasAccess();
   }
 
   Future<bool> requestPermission() async {
-    return RemindersPlatform.instance.requestPermission();
+    return RemindersPlatform.reminders.requestPermission();
   }
 
   Future<String> getDefaultListId() async {
-    return RemindersPlatform.instance.getDefaultListId();
+    return RemindersPlatform.reminders.getDefaultListId();
   }
 
   Future<RemList?> getDefaultList() async {
-    return RemindersPlatform.instance.getDefaultList();
+    return RemindersPlatform.reminders.getDefaultList();
   }
 
   Future<List<RemList>> getAllLists() async {
-    return RemindersPlatform.instance.getAllLists();
+    return RemindersPlatform.reminders.getAllLists();
   }
 
   Future<List<Reminder>?> getReminders([String? id]) async {
-    return RemindersPlatform.instance.getReminders(id);
+    return RemindersPlatform.reminders.getReminders(id);
   }
 
   Future<Reminder> saveReminder(Reminder reminder) async {
-    return RemindersPlatform.instance.saveReminder(reminder);
+    return RemindersPlatform.reminders.saveReminder(reminder);
   }
 
   Future<String?> deleteReminder(String id) async {
-    return RemindersPlatform.instance.deleteReminder(id);
+    return RemindersPlatform.reminders.deleteReminder(id);
   }
 }

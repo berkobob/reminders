@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:reminders/calendar.dart';
+import 'package:reminders/event.dart';
+import 'package:reminders/events.dart';
 import 'package:reminders/reminders.dart';
 
-void main() => runApp(const ExampleApp());
+void main() => runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Apple Events Kit',
+    home: ExampleApp()));
 
 class ExampleApp extends StatefulWidget {
   const ExampleApp({super.key});
@@ -12,6 +18,7 @@ class ExampleApp extends StatefulWidget {
 
 class _ExampleAppState extends State<ExampleApp> {
   final reminders = Reminders();
+
   RemList? currentList;
 
   @override
@@ -19,64 +26,71 @@ class _ExampleAppState extends State<ExampleApp> {
     //request permission to access Reminders
     reminders.requestPermission();
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          actions: [
-            FutureBuilder(
-                future: reminders.hasAccess(),
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  final access = snapshot.data ?? false;
-                  return access
-                      ? TextButton(
-                          onPressed: () => setState(() {
-                            currentList = null;
-                          }),
-                          child: const Text(
-                            'Get All',
-                            style: TextStyle(
-                                color: Colors.white, letterSpacing: 1.0),
-                          ),
-                        )
-                      : const Icon(Icons.cancel_rounded, color: Colors.red);
-                }),
-          ],
-          title: Text(currentList?.title ?? ''),
-        ),
-        drawer: Drawer(
-          child: FutureBuilder(
-              future: reminders.getAllLists(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<RemList>> snapshot) {
-                final lists = snapshot.data ?? [];
-                return ListView.builder(
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(lists[index].title),
-                        onTap: () => setState(() {
-                          currentList = lists[index];
-                          Navigator.of(context).pop();
+    // events.getDefaultCalendar().then(print);
+    // events.getAllCalendars().then(print);
+    // events.hasEventsAccess().then(print);
+    // events.requestAccess().then(print);
+    // events
+    //     .getEvents('A84E394E-C85B-4961-B878-EACB9C247020')
+    //     .then((events) => events!.forEach(print));
+
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          FutureBuilder(
+              future: reminders.hasAccess(),
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                final access = snapshot.data ?? false;
+                return access
+                    ? TextButton(
+                        onPressed: () => setState(() {
+                          currentList = null;
                         }),
-                      );
-                    },
-                    itemCount: lists.length);
+                        child: const Text('Get All'),
+                      )
+                    : const Icon(Icons.cancel_rounded, color: Colors.red);
               }),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            final RemList list = currentList ??
-                await reminders.getDefaultList() ??
-                RemList('New List');
-            final reminder =
-                Reminder(list: list, title: 'Here is a new reminder');
-            await reminders.saveReminder(reminder);
-            setState(() {});
-          },
-          child: const Icon(Icons.add),
-        ),
-        body: buildReminders(currentList?.id),
+          TextButton(
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const EventsPage())),
+              child: const Text(
+                'Events',
+              )),
+        ],
+        title: Text(currentList?.title ?? 'All Lists'),
       ),
+      drawer: Drawer(
+        child: FutureBuilder(
+            future: reminders.getAllLists(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<RemList>> snapshot) {
+              final lists = snapshot.data ?? [];
+              return ListView.builder(
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(lists[index].title),
+                      onTap: () => setState(() {
+                        currentList = lists[index];
+                        Navigator.of(context).pop();
+                      }),
+                    );
+                  },
+                  itemCount: lists.length);
+            }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final RemList list = currentList ??
+              await reminders.getDefaultList() ??
+              RemList('New List');
+          final reminder =
+              Reminder(list: list, title: 'Here is a new reminder');
+          await reminders.saveReminder(reminder);
+          setState(() {});
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: buildReminders(currentList?.id),
     );
   }
 
@@ -141,6 +155,88 @@ class _ExampleAppState extends State<ExampleApp> {
 
             return const Center(child: CircularProgressIndicator());
           }),
+    );
+  }
+}
+
+class EventsPage extends StatefulWidget {
+  const EventsPage({super.key});
+
+  @override
+  State<EventsPage> createState() => _EventsPageState();
+}
+
+class _EventsPageState extends State<EventsPage> {
+  final apple = Events();
+  bool hasAccess = false;
+  List<Calendar> calendars = [];
+  List<Event> events = [];
+
+  @override
+  void initState() {
+    super.initState();
+    apple.hasEventsAccess().then((r) => setState(() {
+          hasAccess = r;
+          if (hasAccess) getCalendars();
+        }));
+  }
+
+  getCalendars() {
+    apple.getAllCalendars().then((r) => setState(() {
+          calendars = r ?? [];
+        }));
+  }
+
+  loadCalendar(String id) {
+    apple.getEvents(id).then((r) => setState(() => events = r ?? []));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          !hasAccess
+              ? TextButton(
+                  onPressed: () async {
+                    final result = await apple.requestAccess();
+                    setState(() {
+                      hasAccess = result == 'true';
+                    });
+                  },
+                  child: const Text('Request Access'))
+              : const Text('Access granted')
+        ],
+      ),
+      body: Row(
+        children: [
+          Flexible(
+            flex: 1,
+            child: ListView(
+                shrinkWrap: true,
+                children: calendars
+                    .map((c) => ListTile(
+                          title: TextButton(
+                            onPressed: () => loadCalendar(c.id),
+                            child: Text(c.title),
+                          ),
+                        ))
+                    .toList()),
+          ),
+          Flexible(
+            flex: 1,
+            child: ListView(
+              shrinkWrap: true,
+              children: (events
+                  .map((e) => ListTile(
+                        title: Text(e.title),
+                        subtitle: Text(e.notes ?? ''),
+                      ))
+                  .toList()),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
