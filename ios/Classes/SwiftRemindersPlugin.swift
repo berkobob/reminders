@@ -50,6 +50,15 @@ public class SwiftRemindersPlugin: NSObject, FlutterPlugin {
           }
         }
 
+      case "saveRemList":
+      if let args = call.arguments as? [String: String] {
+        if let title = args["title"] {
+          self.reminders.saveRemList(title) { (error) in
+            result(error)
+          }
+        }
+      }
+
       case "deleteReminder":
       if let args = call.arguments as? [String: String] {
         if let id = args["id"] {
