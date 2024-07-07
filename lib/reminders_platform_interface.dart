@@ -67,6 +67,10 @@ abstract class RemindersPlatform extends PlatformInterface {
     throw UnimplementedError('saveReminder(Reminder) has not been implemented');
   }
 
+  Future<RemList> saveRemList(RemList remList) async {
+    throw UnimplementedError('saveRemList(remList) has not been implemented');
+  }
+
   Future<String?> deleteReminder(String? id) async {
     throw UnimplementedError('deleteReminder(String) has not been implemented');
   }
