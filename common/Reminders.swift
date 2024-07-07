@@ -101,6 +101,19 @@ class Reminders {
         completion(reminder.calendarItemIdentifier)
     }
 
+    func saveRemList(_ title: String, _ completion: @escaping(String?) -> ()) {
+        let newCalendar: EKCalendar = EKCalendar(for: EKEntityType.reminder, eventStore: eventStore)
+       
+        newCalendar.title = title
+        newCalendar.source = defaultList?.source
+        do {
+            try eventStore.saveCalendar(newCalendar, commit: true)
+        } catch {
+            completion(error.localizedDescription)
+        }
+        completion(newCalendar.calendarIdentifier)
+    }
+
     func deleteReminder(_ id: String, _ completion: @escaping(String?) -> ()) {
         guard let reminder = eventStore.calendarItem(withIdentifier: id) as? EKReminder else {
             completion("Cannot find reminder with ID: \(id)")
