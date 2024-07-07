@@ -71,6 +71,12 @@ class MethodChannelReminders extends RemindersPlatform {
   }
 
   @override
+  Future<RemList> saveRemList(RemList remList) async {
+    remList.id = await methodChannel.invokeMethod('saveRemList', {'title': remList.title});
+    return remList;
+  }
+
+  @override
   Future<String?> deleteReminder(String? id) async {
     return await methodChannel.invokeMethod('deleteReminder', {'id': id});
   }
