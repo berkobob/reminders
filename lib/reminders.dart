@@ -38,6 +38,10 @@ class Reminders {
     return RemindersPlatform.reminders.saveReminder(reminder);
   }
 
+  Future<RemList> saveRemList(RemList remList) async {
+    return RemindersPlatform.reminders.saveRemList(remList);
+  }
+
   Future<String?> deleteReminder(String id) async {
     return RemindersPlatform.reminders.deleteReminder(id);
   }
