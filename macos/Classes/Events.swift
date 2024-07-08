@@ -1,1 +1,1 @@
-/Users/antoine/dev/src/reminders/common/Events.swift
+../../common/Events.swift
