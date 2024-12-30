@@ -7,6 +7,7 @@ class Reminder {
   DateTime? dueDate;
   int priority;
   bool isCompleted;
+  DateTime? completionDate;
   String? notes;
 
   Reminder(
@@ -16,6 +17,7 @@ class Reminder {
       this.dueDate,
       this.priority = 0,
       this.isCompleted = false,
+      this.completionDate,
       this.notes});
 
   Reminder.fromJson(Map<String, dynamic> json)
@@ -24,6 +26,9 @@ class Reminder {
         title = json['title'],
         priority = json['priority'],
         isCompleted = json['isCompleted'],
+        completionDate = json['completionDate'] != null
+            ? DateTime.parse(json['completionDate'])
+            : null,
         notes = json['notes'] {
     if (json['dueDate'] != null) {
       final date = json['dueDate'];
@@ -48,11 +53,21 @@ class Reminder {
               },
         'priority': priority,
         'isCompleted': isCompleted,
+        'completionDate': completionDate == null
+            ? null
+            : {
+                'year': completionDate?.year,
+                'month': completionDate?.month,
+                'day': completionDate?.day,
+                'hour': completionDate?.hour,
+                'minute': completionDate?.minute,
+                'second': completionDate?.second,
+              },
         'notes': notes
       };
 
   @override
   String toString() =>
-      '''List: ${list.title}\tTitle: $title\tdueDate: $dueDate\tPriority: 
-      $priority\tisComplete: $isCompleted\tNotes: $notes\tID: $id''';
+      '''List: ${list.title}\tTitle: $title\tdueDate: $dueDate\tPriority:
+      $priority\tisComplete: $isCompleted \tCompletionDate:$completionDate\tNotes: $notes\tID: $id''';
 }
