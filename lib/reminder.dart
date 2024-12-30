@@ -26,14 +26,22 @@ class Reminder {
         title = json['title'],
         priority = json['priority'],
         isCompleted = json['isCompleted'],
-        completionDate = json['completionDate'] != null
-            ? DateTime.parse(json['completionDate'])
-            : null,
         notes = json['notes'] {
     if (json['dueDate'] != null) {
       final date = json['dueDate'];
       dueDate = DateTime(date['year']!, date['month']!, date['day']!,
           date['hour'] ?? 00, date['minute'] ?? 00, date['second'] ?? 00);
+    }
+    if (json['completionDate'] != null) {
+      DateTime referenceDate = DateTime.utc(2001, 1, 1);
+
+      // Convert the Swift timestamp to a DateTime object
+      referenceDate = referenceDate.add(Duration(
+        seconds: json['completionDate'].toInt(),
+        milliseconds: ((json['completionDate'] % 1) * 1000).round(),
+      ));
+
+      completionDate = referenceDate;
     }
   }
 
