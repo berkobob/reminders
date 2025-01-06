@@ -1,13 +1,13 @@
 # Reminders
 
-This is a simple Flutter plugin to provider, read, write, edit and delete access to Apple Reminders on ios and MacOS.
+This is a simple Flutter plugin to provide, read, write, edit and delete access to Apple Reminders on ios and MacOS.
 
 ## API
 
-When the `reminders` class is instantiated it requests permission to access the users reminders. If permission has not yet been given a popup will appear asking for permission. Success or failure can be determined:
+When the `reminders` class is instantiated it requests permission to access the user's reminders. If permission has not yet been given a popup will appear asking for permission. Success or failure can be determined:
 
 `Future<bool> requestPermission()`
-This will prompt a system alert dialog with the text you provided from 'NSRemindersUsageDescription'. Returns true if user accepted prompt (or has already accepted), or false (or if it has already been declined previously).
+This will prompt a system alert dialog with the text you provided from 'NSRemindersUsageDescription'. Returns true if the user accepted the prompt (or has already accepted), or false (or if it has already been declined previously).
 
 `Future<bool> hasAccess()`
 

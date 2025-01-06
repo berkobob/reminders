@@ -1,3 +1,6 @@
+## 2.0.3 2024-12-30
+* Add support to access Completion Date of a reminder
+
 ## 2.0.2 2024-06-30
 * Fix access always true bug in ios version
 
@@ -12,7 +15,7 @@
 
 * Support for iOS & iPadOS 17's new permission handler
 * Breaking Changes: You need to add additional keys to your info.plist as seen in docs
-  
+
 ## 1.1.0 2023-01-14
 
 * Add remove dueDate from reminder
